@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Let's Cut the Cake 🎂</title>
+<style>
+:root{color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;overflow-x:hidden;background:radial-gradient(circle at top,#44204e 0,#170f2d 48%,#080817 100%);color:#fff;font-family:system-ui,-apple-system,Segoe UI,sans-serif;text-align:center;padding:24px}
+.wrap{width:min(100%,620px);position:relative}
+h1{font-size:clamp(2rem,7vw,3.4rem);margin:0 0 8px;color:#ffd5e7;text-shadow:0 0 22px #ff6ca8}
+.sub{color:#eadced;margin:0 auto 18px;line-height:1.6}
+.cake-scene{position:relative;height:300px;display:flex;align-items:flex-end;justify-content:center;margin:0 auto 12px;cursor:pointer;outline:none}
+.cake{position:relative;width:min(78vw,350px);height:160px;transition:transform .5s;margin-inline:auto}
+.plate{position:absolute;bottom:0;left:-8%;width:116%;height:22px;border-radius:50%;background:linear-gradient(#fff,#d5d4e9);box-shadow:0 7px 0 #8f8ba9}
+.tier{position:absolute;left:0;width:100%;height:76px;bottom:18px;border-radius:18px 18px 12px 12px;background:linear-gradient(90deg,#e879b1,#ffc1d9 45%,#e879b1);box-shadow:inset 0 -10px 0 #d95b9c}
+.icing{position:absolute;left:-2%;top:-8px;width:104%;height:27px;border-radius:50%;background:#fff0f7;box-shadow:0 5px 0 #f7b4d2}
+.icing:before,.icing:after{content:"";position:absolute;top:12px;width:18px;height:28px;background:#fff0f7;border-radius:0 0 12px 12px}
+.icing:before{left:22%}.icing:after{right:22%;height:20px}
+.sprinkles{position:absolute;inset:28px 20px 15px;background:radial-gradient(ellipse at 20% 25%,#fff 0 2px,transparent 3px),radial-gradient(ellipse at 40% 60%,#7d4cff 0 2px,transparent 3px),radial-gradient(ellipse at 63% 35%,#ffd65e 0 2px,transparent 3px),radial-gradient(ellipse at 78% 70%,#fff 0 2px,transparent 3px),radial-gradient(ellipse at 52% 78%,#ff5d9e 0 2px,transparent 3px)}
+.candle{position:absolute;z-index:4;bottom:92px;width:13px;height:62px;border-radius:5px 5px 2px 2px;background:repeating-linear-gradient(135deg,#fff 0 7px,#a78bfa 7px 13px);box-shadow:0 0 0 1px #fff6;left:50%;transform:translateX(-50%)}
+.candle:nth-child(1){left:38%}
+.candle:nth-child(2){left:50%;height:74px;bottom:92px}
+.candle:nth-child(3){left:62%}
+.flame{position:absolute;left:50%;top:-22px;transform:translateX(-50%);width:15px;height:23px;background:linear-gradient(#fff9a8,#ff9a36 70%,#ff4f79);border-radius:60% 40% 60% 40%;box-shadow:0 0 18px #ffb13b;animation:flicker .7s infinite alternate}
+@keyframes flicker{to{transform:translateX(-50%) rotate(7deg) scale(.9)}}
+.cut-line{position:absolute;display:none;z-index:5;left:52%;top:15px;width:4px;height:125px;background:#a7467d;transform:rotate(18deg);box-shadow:0 0 8px #fff}
+.cake.cut .cut-line{display:block}
+.cake.cut{transform:scale(1.02)}
+.cake.cut .tier{animation:cutCake .9s ease forwards}
+@keyframes cutCake{0%{filter:brightness(1)}45%{filter:brightness(1.35)}100%{filter:brightness(1.05)}}
+button{border:0;border-radius:999px;padding:14px 24px;font-weight:800;font-size:1rem;cursor:pointer;color:#29132e;background:linear-gradient(135deg,#ffe5a5,#ff9ecb);box-shadow:0 8px 24px #ff73b355;transition:transform .2s}
+button:active{transform:scale(.97)}
+#instruction{min-height:52px;color:#ffe6f3;font-weight:600;line-height:1.5;margin:8px 0 16px}
+#special{display:none;margin-top:8px}
+#special.show{display:inline-block;animation:pop .45s ease both}
+@keyframes pop{from{opacity:0;transform:translateY(12px) scale(.9)}to{opacity:1;transform:translateY(0) scale(1)}}
+#message{display:none;margin:20px auto 0;padding:22px;border:1px solid #ffffff30;border-radius:22px;background:#ffffff0d;box-shadow:0 12px 40px #0003;line-height:1.8;max-width:520px}
+#message.show{display:block;animation:pop .6s ease both}
+.hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.heart{position:absolute;bottom:-30px;animation:floatUp 4s linear forwards;opacity:.9}
+@keyframes floatUp{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+@media(max-width:420px){.cake-scene{height:260px}.cake{transform:scale(.88);transform-origin:bottom center}.cake.cut{transform:scale(.9)}}
+
+/* Premium cake-cut animation */
+.cake{transform-origin:center bottom}
+.cake .tier{position:absolute;overflow:hidden}
+.cake .slice-piece{position:absolute;z-index:6;display:none;right:7%;bottom:24px;width:34%;height:76px;border-radius:8px 16px 10px 5px;background:linear-gradient(90deg,#f6a3ca,#ffd1e4 55%,#e879b1);clip-path:polygon(0 0,100% 18%,100% 100%,0 100%);box-shadow:8px 8px 0 #c85a98,0 0 22px #ffb8d9}
+.cake.cut .slice-piece{display:block;animation:sliceLift 1.15s cubic-bezier(.2,.8,.2,1) forwards}
+.cake.cut .cut-line{display:block;animation:knifeFlash .65s ease-out both}
+@keyframes sliceLift{0%{transform:translate(0,0) rotate(0);opacity:1}35%{transform:translate(5px,-8px) rotate(2deg)}100%{transform:translate(52px,-28px) rotate(12deg);opacity:.98}}
+@keyframes knifeFlash{0%{opacity:0;transform:rotate(18deg) scaleY(.3)}35%{opacity:1;transform:rotate(18deg) scaleY(1.1)}100%{opacity:.75;transform:rotate(18deg) scaleY(1)}}
+.cake.cut{animation:cakeCelebrate .7s ease-out}
+@keyframes cakeCelebrate{0%{transform:scale(1)}35%{transform:scale(1.045) rotate(-1deg)}70%{transform:scale(1.015) rotate(1deg)}100%{transform:scale(1)}}
+.letter-overlay{position:fixed;inset:0;z-index:50;display:none;place-items:center;padding:18px;background:rgba(8,4,18,.78);backdrop-filter:blur(8px)}
+.letter-overlay.open{display:grid;animation:overlayIn .35s ease both}
+@keyframes overlayIn{from{opacity:0}to{opacity:1}}
+.letter-card{position:relative;width:min(760px,100%);max-height:90vh;overflow:auto;padding:12px;border-radius:25px;background:#fff;box-shadow:0 25px 90px #0008;transform:translateY(16px) scale(.96);animation:letterIn .55s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes letterIn{to{transform:translateY(0) scale(1)}}
+.letter-close{position:sticky;float:right;top:0;z-index:3;width:38px;height:38px;padding:0;border:0;border-radius:50%;background:#fff;color:#5b3154;font-size:28px;line-height:1;box-shadow:0 3px 14px #0002}
+.letter-paper{min-height:350px;border-radius:16px;padding:22px;background:#fff8e8;color:#553747;border:1px solid #e9d8c8}
+#letterTitle{min-height:42px;margin:8px 32px 14px 0;text-align:center;font-family:"Brush Script MT","Segoe Script",cursive;font-size:clamp(2rem,6vw,2.7rem);color:#d64e85}
+.letter-layout{display:grid;grid-template-columns:minmax(110px,.75fr) minmax(0,1.4fr);gap:20px;align-items:center}
+.letter-art{position:relative;display:grid;place-items:center;min-height:190px}
+.letter-heart-img{width:min(100%,190px);max-height:210px;object-fit:contain;filter:drop-shadow(0 8px 10px #e77da944);animation:heartPulse 1.5s infinite}
+@keyframes heartPulse{50%{transform:scale(1.06)}}
+.floating-heart{position:absolute;top:18%;right:5%;font-size:26px;animation:floatHeart 2s infinite ease-in-out}
+.floating-heart.second{top:auto;bottom:18%;left:4%;animation-delay:.6s}
+@keyframes floatHeart{50%{transform:translateY(-12px) rotate(10deg)}}
+.letter-copy{font-family:Georgia,serif;font-size:1rem;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
+.letter-love-img{display:block;width:min(150px,60%);height:70px;object-fit:contain;margin:0 auto 8px}
+.letter-cat{display:block;width:65px;height:65px;object-fit:contain;margin:8px 0 0 auto}
+#letterText{min-height:120px;margin:0}
+@media(max-width:520px){.letter-paper{padding:17px 13px}.letter-layout{grid-template-columns:1fr;gap:8px}.letter-art{min-height:110px}.letter-heart-img{width:100px;height:110px}.letter-copy{font-size:.96rem}.letter-love-img{height:48px}.letter-cat{width:50px;height:50px}.cake.cut .slice-piece{animation-name:sliceLiftMobile}}
+@keyframes sliceLiftMobile{to{transform:translate(34px,-22px) rotate(12deg);opacity:.98}}
+
+</style>
+
+<style>
+#letterNextButton{display:none;margin:8px auto 4px;padding:12px 32px;border:0;border-radius:999px;background:linear-gradient(135deg,#ff5d9e,#d92f78);color:#fff;font:700 1.05rem Georgia,serif;box-shadow:0 8px 22px #d94c8240;cursor:pointer;letter-spacing:.3px}
+#letterNextButton.show{display:block;animation:nextPop .65s ease both}
+#letterNextButton:active{transform:scale(.97)}
+@keyframes nextPop{from{opacity:0;transform:translateY(12px) scale(.9)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:600px){#letterNextButton{font-size:1rem;padding:12px 28px}}
+</style>
+
+</head>
+<body>
+<div class="hearts" id="hearts"></div>
+<main class="wrap">
+  <h1>Let's Cut the Cake 🎂</h1>
+  <p class="sub">Make a wish! Tap just one candle to blow out all the candles.</p>
+  <div class="cake-scene" id="cakeScene" role="button" tabindex="0" aria-label="Birthday cake. Tap to cut after blowing out the candles.">
+    <div class="cake" id="cake">
+      <div class="candle"><span class="flame"></span></div>
+      <div class="candle"><span class="flame"></span></div>
+      <div class="candle"><span class="flame"></span></div>
+      <div class="plate"></div><div class="tier"><div class="icing"></div><div class="sprinkles"></div></div><div class="cut-line"></div><div class="slice-piece"></div>
+    </div>
+  </div>
+  <p id="instruction">Tap any one candle to blow out all the candles 🕯️</p>
+  <button id="special">A Special Message for You 💌</button>
+  <section id="message">
+    <div style="font-size:2.2rem">💖✨💌</div>
+    <h2 style="color:#ffd5e7;margin:8px 0">A Special Message for You</h2>
+    <p>On your special day, I wish you endless happiness, beautiful surprises, and a heart full of love. May every new day bring you closer to your dreams. You deserve all the wonderful things life has to offer.</p>
+    <p style="font-size:1.2rem;font-weight:800;color:#ffd5e7">Happy Birthday! 🎂❤️</p>
+  </section>
+</main>
+
+<div class="letter-overlay" id="letterOverlay" aria-hidden="true">
+  <div class="letter-card" role="dialog" aria-modal="true" aria-labelledby="letterTitle">
+    <button class="letter-close" id="letterClose" aria-label="Close letter">×</button>
+    <div class="letter-paper">
+      <h2 id="letterTitle"></h2>
+      <div class="letter-layout">
+        <div class="letter-art">
+          <img src="Images/heart_letter.png" alt="Heart illustration" class="letter-heart-img">
+          <span class="floating-heart">💗</span><span class="floating-heart second">💖</span>
+        </div>
+        <div class="letter-copy">
+          <img src="Images/love.png" alt="" class="letter-love-img">
+          <p id="letterText"></p>
+          <button type="button" id="letterNextButton">Next 💖</button>
+          <img src="Images/mewmew.gif" alt="Cute animated cat" class="letter-cat">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+ const cake=document.getElementById('cake'), scene=document.getElementById('cakeScene');
+ const candles=[...document.querySelectorAll('.candle')], instruction=document.getElementById('instruction');
+ const special=document.getElementById('special'), message=document.getElementById('message');
+ let blown=false, cut=false;
+ function blow(){if(blown||cut)return;blown=true;candles.forEach(c=>{const f=c.querySelector('.flame');if(f)f.remove()});instruction.textContent='All candles are out! Now tap the cake to cut it 🎂';}
+ candles.forEach(c=>c.addEventListener('click',e=>{e.stopPropagation();blow()}));
+ function cutCake(){if(cut)return;if(!blown){instruction.textContent='Tap any one candle first to blow out all the candles 🕯️';return;}cut=true;cake.classList.add('cut');instruction.textContent='Yay! The cake is cut! 🎉';special.classList.add('show');confetti();}
+ scene.addEventListener('click',e=>{if(e.target.closest('.candle'))return;cutCake()});
+ scene.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();cutCake()}});
+ special.addEventListener('click',()=>{openLetter();confetti()});
+ function openLetter(){
+   const overlay=document.getElementById('letterOverlay'), title=document.getElementById('letterTitle'), text=document.getElementById('letterText');
+   overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');title.textContent='';text.textContent='';
+   const heading='শুভ জন্মদিন জীম 💗';
+   const body="শুভ জন্মদিন জীম 💗\nসম্ভবত এই ০৮ নভেম্বর তারিখ টা কখনই আমার ভুলে যাওয়া সম্ভব না।\nঠিক দুই বছর আগে এই দিনেই হঠাৎ ঝড়ের মত তোমার আগমন আমার জীবনে।\nসেই দিনই তোমাকে প্রথম দেখা।\nঅতঃপর THE END....\nসত্যি বলতে তোমাকে প্রথমবার দেখার সেই অনুভূতি আমি আজও ভুলতে পারিনি।\nতোমার সেই ছবি টা এখনো আমার চোখে ভাসে। হয়তো ওই ছবির থেকেও তোমার অনেক সুন্দর ছবি আছে কিন্তু আমার কাছে ঐটাই বেস্ট।\n\nসময়ের ব্যবধানে আজ তুমি আমার থেকে কত দূরে!🙂\nযদিও আমি কখনই চাইনি আমাদের গল্পটা এভাবে থেমে যাক!🙃\n\nহয়তো তুমি বোঝনি বা হয়তো তুমি খেয়ালই করোনি তুমি আমার জন্য কি ছিলে তুমি ছিলে আমার জীবনের সেই অধ্যায় যাকে চাইলেও কোনদিন মুছে ফেলা যাবে না\n\nতোমাকে ভালোবাসার ভাগ্য হইলো, কিন্তু তোমাকে পাওয়ার ভাগ্য হইলো না, আজ বুঝতে পারলাম ভাগ্য মানুষকে কতটা নিষ্ঠুর খেলায় ফেলে দিতে পারে। আমি সবসময় ভেবেছিলাম তুমি আমার হবে, আমি তোমাকে আমার জীবনের শেষ মুহূর্ত পর্যন্ত আঁকড়ে ধরে রাখব। কিন্তু বাস্তবতা হলো তুমি ছিলে শুধু আমার স্বপ্নের মানুষ, আমার হাসির আসল কারণ, আমার জীবনের সবচেয়ে সুন্দর উপহার, অথচ সেই উপহারটাকে আমি কোনোদিন আমার হাতে পাইনি।\n\nতোমার সাথে কাটানো প্রতিটা মুহূর্ত আমার কাছে যে কতটা স্পেশাল হয়তো আমি সেটা তোমাকে কখনোই বুঝাতে পারবো না। জানি না তোমার কেমন লাগছিল।\nকিন্তু সবকিছুর জন্য অনেক অনেক ধন্যবাদ।\nধন্যবাদ এই দুইটা বছর আমাকে সহ্য করার জন্য।\n\nতুমি যখন হাসো আমার কেমন জানি এক অদ্ভুদ ভাবে ভালো লাগে। একটাই চাওয়া যখন যেভাবে যার কাছে যেখানেই থাকো না কেনো সব সময় সুস্থ থাকো,\nহাসিখুশি থাকো সবসময়, আর নিজের ইচ্ছা গুলো, স্বপ্ন গুলো সব পূরণ করো।\nআর অনেক অনেক সুখী হও জীবনে💗\n\nতুমি একবার আমাকে জিজ্ঞেস করছিলে যে তোমার যদি অন্য জায়গায় বিয়ে হয়ে যায় বা আমি যদি তোমাকে না পাই তারপর তোমাকে এইরকম ভালোবাসবো কিনা....\nআশা করি উত্তর টা এত দিন পেয়ে গেছো।\n\nহয়তো তোমাকে কখনো পাওয়া হবে না, কিন্তু আমি তোমাকে ভালোবাসছিলাম, ভালোবাসি, ভালোবাসবো। বাস্তবিক জীবনে তুমি আমার না হলেও কাল্পনিক জীবনে তুমি একান্তই আমার।";
+   let i=0,j=0;
+   const titleTimer=setInterval(()=>{title.textContent+=heading[i++]||'';if(i>=heading.length)clearInterval(titleTimer)},95);
+   setTimeout(()=>{const bodyTimer=setInterval(()=>{text.textContent+=body[j++]||'';if(j>=body.length){clearInterval(bodyTimer);const next=document.getElementById('letterNextButton');if(next)next.classList.add('show')}},18);},450);
+ }
+ document.getElementById('letterNextButton').addEventListener('click',()=>{window.location.href='surprise.html?play=1'});
+ document.getElementById('letterClose').addEventListener('click',()=>{document.getElementById('letterOverlay').classList.remove('open');document.getElementById('letterOverlay').setAttribute('aria-hidden','true')});
+ document.getElementById('letterOverlay').addEventListener('click',e=>{if(e.target.id==='letterOverlay'){e.currentTarget.classList.remove('open');e.currentTarget.setAttribute('aria-hidden','true')}});
+ function confetti(){const host=document.getElementById('hearts');for(let i=0;i<14;i++){const el=document.createElement('span');el.className='heart';el.textContent=['💗','💖','✨','💕','🎉'][Math.floor(Math.random()*5)];el.style.left=Math.random()*100+'%';el.style.animationDelay=(Math.random()*.8)+'s';el.style.fontSize=(16+Math.random()*18)+'px';host.appendChild(el);setTimeout(()=>el.remove(),5000)}}
+})();
+</script>
+</body>
+</html>
